@@ -1,0 +1,32 @@
+package org.usfirst.frc.tankdrive;
+//all the imports/packages 
+import edu.wpi.first.wpilibj.SimpleRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+
+
+public class TankDrive extends TimedRobot {
+    private DifferentialDrive ediBot;//initializing differential drive + joystick classes/variables
+    private Joystick leftStick, rightStick;
+  
+    private final MotorController leftMotor = new PWMSparkMax(0.3); //final variable set to PMW values(30% and 70% for the motors)
+    private final MotorController rightMotor = new PWMSparkMax(0.7);
+  
+    @Override
+    public void robotInit() { //initiliazation of variables/motors
+      //Inverts one of the motors b/c the motors are facing opposite to that of the other side 
+      leftMotor.setInverted(true);
+      rightMotor.setInverted(false);
+  
+      ediBot = new DifferentialDrive(leftMotor, rightMotor); //setting steering of the robot to left motor and right motor
+      leftStick = new Joystick(0);//setting the variables to equal to Joystick USB port 0
+      rightStick = new Joystick(1);//setting Joystick to USB port 1
+    }
+  
+    @Override
+    public void teleopPeriodic() {//main teleop method and gets controlled by the joysticks y positions
+      m_myRobot.tankDrive(-leftStick.getY() * 1.15, -rightStick.getY()* 1.15);
+    }
+  }
